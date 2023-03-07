@@ -1,6 +1,7 @@
 using Serilog;
 using Microsoft.AspNetCore.StaticFiles;
 using SampleApp.BackendAPI.Services;
+using SampleApp.BackendAPI.Models;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -20,6 +21,8 @@ builder.Services.AddScoped<IMailServices, LocalMailService>();
 #else
 builder.Services.AddScoped<IMailServices, CloudMailServices>();
 #endif
+
+builder.Services.AddScoped<ISamurai, SamuraiService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
