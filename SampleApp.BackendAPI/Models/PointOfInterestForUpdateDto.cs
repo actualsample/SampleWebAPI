@@ -2,9 +2,9 @@
 
 namespace SampleApp.BackendAPI.Models
 {
-    public class PointOfInterestForCreationDto
+    public class PointOfInterestForUpdateDto
     {
-        [Required(ErrorMessage ="Anda harus menyediakan value")]
+        [Required(ErrorMessage = "Anda harus menyediakan value")]
         [MaxLength(50)]
         public string Name { get; set; } = string.Empty;
 
