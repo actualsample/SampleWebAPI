@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SampleApp.BackendAPI.Models;
+using SampleApp.BackendAPI.Services;
 using System.Collections;
 
 namespace SampleApp.BackendAPI.Controllers
@@ -11,9 +12,13 @@ namespace SampleApp.BackendAPI.Controllers
     public class PointsOfInterestController : ControllerBase
     {
         private readonly ILogger<PointsOfInterestController> _logger;
-        public PointsOfInterestController(ILogger<PointsOfInterestController> logger)
+        private readonly IMailServices _mailService;
+
+        public PointsOfInterestController(ILogger<PointsOfInterestController> logger,
+            IMailServices mailService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _mailService = mailService ?? throw new ArgumentNullException(nameof(mailService));
         }
 
         [HttpGet]
@@ -64,8 +69,6 @@ namespace SampleApp.BackendAPI.Controllers
                 return NotFound();
             }
 
-
-
             var maxPointOfInterestId = CitiesDataStore.Current.Cities.SelectMany(c => c.PointsOfInterest)
                 .Max(p => p.Id);
             var finalPointOfInterest = new PointOfInterestDto()
@@ -96,6 +99,8 @@ namespace SampleApp.BackendAPI.Controllers
 
             pointOfInterestUpdate.Name = pointOfInterestForUpdateDto.Name;
             pointOfInterestUpdate.Description= pointOfInterestForUpdateDto.Description;
+
+            _mailService.Seed($"Point of interest updated","Message");
 
             return NoContent();
         }
