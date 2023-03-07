@@ -19,5 +19,24 @@ namespace SampleApp.BackendAPI.Controllers
             }
             return Ok(city);
         }
+
+        [HttpGet("{pointOfInterestId}")]
+        public ActionResult<PointOfInterestDto> GetPointOfInterest(int cityId,int pointOfInterestId)
+        {
+            var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
+            if(city == null)
+            {
+                return NotFound();
+            }
+
+            var pointOfInterest = city.PointsOfInterest.FirstOrDefault(c=>c.Id==pointOfInterestId);
+            if (pointOfInterest == null)
+            {
+                return NotFound();
+            }
+            return Ok(pointOfInterest);
+        }
     }
+
+  
 }
