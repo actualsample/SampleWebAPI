@@ -99,7 +99,25 @@ namespace SampleApp.BackendAPI.Services
 
         public Samurai Update(int id, Samurai obj)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(GetConn()))
+            {
+                string strSql = @"update Samurais set Name=@Name where Id=@Id";
+                var param = new { Id = id, Name = obj.Name };
+                try
+                {
+                    conn.Execute(strSql, param);
+                    var samuraiUpdate = GetById(id);
+                    return samuraiUpdate;
+                }
+                catch (SqlException sqlEX)
+                {
+                    throw new Exception(sqlEX.Message);
+                }
+                catch(Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
         }
     }
 }

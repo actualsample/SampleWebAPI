@@ -60,12 +60,20 @@ namespace SampleApp.BackendAPI.Controllers
 
         // POST api/<SamuraisController>
         [HttpPost]
-        public ActionResult<Samurai> Post(Samurai samurai)
+        public ActionResult<SamuraiReadDto> Post(SamuraiInsertDto samuraiDto)
         {
             try
             {
+                var samurai = new Samurai()
+                {
+                    Name = samuraiDto.Name
+                };
                 var result = _samurai.Insert(samurai);
-                return CreatedAtRoute("GetById", new { Id = result.Id }, result);
+                var samuraiReadDto = new SamuraiReadDto {
+                    Id = result.Id,
+                    Name = result.Name 
+                };
+                return CreatedAtRoute("GetById", new { Id = result.Id }, samuraiReadDto);
             }
             catch (Exception ex)
             {
@@ -75,8 +83,26 @@ namespace SampleApp.BackendAPI.Controllers
 
         // PUT api/<SamuraisController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult<SamuraiReadDto> Put(int id, SamuraiUpdateDto samuraiUpdateDto)
         {
+            try
+            {
+                var samurai = new Samurai
+                {
+                    Name = samuraiUpdateDto.Name
+                };
+                var result = _samurai.Update(id, samurai);
+                var samuraiReadDto = new SamuraiReadDto
+                {
+                    Id = result.Id,
+                    Name = result.Name
+                };
+                return Ok(samuraiReadDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // DELETE api/<SamuraisController>/5
