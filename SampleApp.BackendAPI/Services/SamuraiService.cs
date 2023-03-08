@@ -131,5 +131,10 @@ namespace SampleApp.BackendAPI.Services
                 }
             }
         }
+
+        public IEnumerable<Samurai> GetAllWithQuotes()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

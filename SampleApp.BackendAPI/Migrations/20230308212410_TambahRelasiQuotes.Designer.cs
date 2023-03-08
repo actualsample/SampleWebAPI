@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SampleApp.BackendAPI.Data;
 
@@ -10,9 +11,10 @@ using SampleApp.BackendAPI.Data;
 namespace SampleApp.BackendAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230308212410_TambahRelasiQuotes")]
+    partial class TambahRelasiQuotes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,23 +22,6 @@ namespace SampleApp.BackendAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("SampleApp.BackendAPI.Models.Battle", b =>
-                {
-                    b.Property<int>("BattleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BattleId"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BattleId");
-
-                    b.ToTable("Battles");
-                });
 
             modelBuilder.Entity("SampleApp.BackendAPI.Models.Quote", b =>
                 {
@@ -57,15 +42,7 @@ namespace SampleApp.BackendAPI.Migrations
 
                     b.HasIndex("SamuraiId");
 
-                    b.ToTable("Quotes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            SamuraiId = 1,
-                            Text = "Quote from Tanjiro Kamado"
-                        });
+                    b.ToTable("Quote");
                 });
 
             modelBuilder.Entity("SampleApp.BackendAPI.Models.Samurai", b =>
@@ -83,28 +60,6 @@ namespace SampleApp.BackendAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Samurais");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Kamado Tanjiro"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Muzan Kibutsuji"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Zenitsu"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Inosuke"
-                        });
                 });
 
             modelBuilder.Entity("SampleApp.BackendAPI.Models.Quote", b =>
