@@ -42,10 +42,30 @@ namespace SampleApp.BackendAPI.Controllers
         }
 
         [HttpGet("withQuotes")]
-        public ActionResult<IEnumerable<Samurai>> GetAllWithQuotes()
+        public ActionResult<IEnumerable<SamuraiWithQuotesReadDto>> GetAllWithQuotes()
         {
+            List<SamuraiWithQuotesReadDto> listSamuraiWithQuotesDto = new List<SamuraiWithQuotesReadDto>();
             var results = _samurai.GetAllWithQuotes();
-            return Ok(results);
+            foreach(Samurai samurai in results)
+            {
+                var listQuotes = new List<QuoteReadDto>();
+                foreach (var quote in samurai.Quotes)
+                {
+                    listQuotes.Add(new QuoteReadDto
+                    {
+                        Id = quote.Id,
+                        Text = quote.Text,
+                        SamuraiId = samurai.Id
+                    });
+                }
+                listSamuraiWithQuotesDto.Add(new SamuraiWithQuotesReadDto
+                { 
+                    Id = samurai.Id, 
+                    Name=samurai.Name, 
+                    Quotes=listQuotes 
+                });
+            }
+            return Ok(listSamuraiWithQuotesDto);
         }
 
         // GET api/<SamuraisController>/5
