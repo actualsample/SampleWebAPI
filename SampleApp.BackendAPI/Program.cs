@@ -4,6 +4,8 @@ using SampleApp.BackendAPI.Services;
 using SampleApp.BackendAPI.Models;
 using SampleApp.BackendAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 /*Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -15,7 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(
+    opt=>opt.JsonSerializerOptions.ReferenceHandler=ReferenceHandler.IgnoreCycles);
 
 
 #if DEBUG

@@ -41,6 +41,13 @@ namespace SampleApp.BackendAPI.Controllers
             }
         }
 
+        [HttpGet("withQuotes")]
+        public ActionResult<IEnumerable<Samurai>> GetAllWithQuotes()
+        {
+            var results = _samurai.GetAllWithQuotes();
+            return Ok(results);
+        }
+
         // GET api/<SamuraisController>/5
         [HttpGet("{id}",Name = "GetById")]
         public ActionResult<SamuraiReadDto> Get(int id)
