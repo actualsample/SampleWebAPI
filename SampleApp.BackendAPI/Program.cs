@@ -2,6 +2,8 @@ using Serilog;
 using Microsoft.AspNetCore.StaticFiles;
 using SampleApp.BackendAPI.Services;
 using SampleApp.BackendAPI.Models;
+using SampleApp.BackendAPI.Data;
+using Microsoft.EntityFrameworkCore;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -21,6 +23,10 @@ builder.Services.AddScoped<IMailServices, LocalMailService>();
 #else
 builder.Services.AddScoped<IMailServices, CloudMailServices>();
 #endif
+
+//menambahkan EF Core
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
+    builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<ISamurai, SamuraiService>();
 
