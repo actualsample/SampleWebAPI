@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SampleApp.BackendAPI.Dto;
 using SampleApp.BackendAPI.Models;
 using SampleApp.BackendAPI.Services;
 
@@ -18,17 +19,43 @@ namespace SampleApp.BackendAPI.Controllers
 
         // GET: api/<SamuraisController>
         [HttpGet]
-        public IEnumerable<Samurai> Get()
+        public ActionResult<IEnumerable<SamuraiReadDto>> Get()
         {
-            var results = _samurai.GetAll();
-            return results;
+            try
+            {
+                List<SamuraiReadDto> samuraiReadDtos = new List<SamuraiReadDto>();
+                var results = _samurai.GetAll();
+                foreach (var result in results)
+                {
+                    samuraiReadDtos.Add(new SamuraiReadDto
+                    {
+                        Name = result.Name
+                    });
+                }
+                return Ok(samuraiReadDtos);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);  
+            }
         }
 
         // GET api/<SamuraisController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<SamuraiReadDto> Get(int id)
         {
-            return "value";
+            try
+            {
+                var result = _samurai.GetById(id);
+                SamuraiReadDto samuraiReadDto = new SamuraiReadDto();
+                samuraiReadDto.Name = result.Name;
+
+                return Ok(samuraiReadDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST api/<SamuraisController>

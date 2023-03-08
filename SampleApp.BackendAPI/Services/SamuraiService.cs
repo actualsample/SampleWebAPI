@@ -1,5 +1,6 @@
 ﻿using SampleApp.BackendAPI.Models;
 using Microsoft.Data.SqlClient;
+using Dapper;
 
 namespace SampleApp.BackendAPI.Services
 {
@@ -22,6 +23,17 @@ namespace SampleApp.BackendAPI.Services
         }
 
         public IEnumerable<Samurai> GetAll()
+        {
+            using (SqlConnection conn = new SqlConnection(GetConn()))
+            {
+                string strSql = @"select * from Samurais 
+                                  order by Name";
+                var results = conn.Query<Samurai>(strSql);
+                return results;
+            }
+        }
+
+        /*public IEnumerable<Samurai> GetAll()
         {
             using(SqlConnection conn = new SqlConnection(GetConn()))
             {
@@ -47,11 +59,19 @@ namespace SampleApp.BackendAPI.Services
 
                 return lstSamurai;
             }
-        }
+        }*/
 
         public Samurai GetById(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(GetConn()))
+            {
+                string strSql = @"select * from Samurais where Id=@Id";
+                var param = new { Id = id };
+                var result = conn.QueryFirstOrDefault<Samurai>(strSql,param);
+                if (result == null)
+                    throw new Exception($"Data samurai {id} tidak ditemukan");
+                return result;
+            }
         }
 
         public IEnumerable<Samurai> GetByName(string name)
