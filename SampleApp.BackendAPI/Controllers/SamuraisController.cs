@@ -41,7 +41,7 @@ namespace SampleApp.BackendAPI.Controllers
         }
 
         // GET api/<SamuraisController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}",Name = "GetById")]
         public ActionResult<SamuraiReadDto> Get(int id)
         {
             try
@@ -60,8 +60,17 @@ namespace SampleApp.BackendAPI.Controllers
 
         // POST api/<SamuraisController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<Samurai> Post(Samurai samurai)
         {
+            try
+            {
+                var result = _samurai.Insert(samurai);
+                return CreatedAtRoute("GetById", new { Id = result.Id }, result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // PUT api/<SamuraisController>/5

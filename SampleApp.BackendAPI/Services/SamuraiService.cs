@@ -81,7 +81,20 @@ namespace SampleApp.BackendAPI.Services
 
         public Samurai Insert(Samurai obj)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(GetConn()))
+            {
+                string strSql = @"insert into Samurais(Name) values(@Name);select * from Samurais where Id=@@identity";
+                var param = new { Name = obj.Name };
+                try
+                {
+                    var newSamurai = conn.QueryFirstOrDefault<Samurai>(strSql, param);
+                    return newSamurai;
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception($"{sqlEx.Message}");
+                }
+            }
         }
 
         public Samurai Update(int id, Samurai obj)
