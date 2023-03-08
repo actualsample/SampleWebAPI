@@ -19,7 +19,19 @@ namespace SampleApp.BackendAPI.Services
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(GetConn()))
+            {
+                string strSql = @"delete from Samurais where Id=@Id";
+                var param = new { Id = id };
+                try
+                {
+                    conn.Execute(strSql,param);
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception(sqlEx.Message);
+                }
+            }
         }
 
         public IEnumerable<Samurai> GetAll()

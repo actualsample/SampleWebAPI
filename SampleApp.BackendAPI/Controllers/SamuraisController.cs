@@ -29,6 +29,7 @@ namespace SampleApp.BackendAPI.Controllers
                 {
                     samuraiReadDtos.Add(new SamuraiReadDto
                     {
+                        Id= result.Id,
                         Name = result.Name
                     });
                 }
@@ -47,8 +48,11 @@ namespace SampleApp.BackendAPI.Controllers
             try
             {
                 var result = _samurai.GetById(id);
-                SamuraiReadDto samuraiReadDto = new SamuraiReadDto();
-                samuraiReadDto.Name = result.Name;
+                SamuraiReadDto samuraiReadDto = new SamuraiReadDto()
+                {
+                    Id = result.Id,
+                    Name = result.Name
+                };
 
                 return Ok(samuraiReadDto);
             }
@@ -107,8 +111,17 @@ namespace SampleApp.BackendAPI.Controllers
 
         // DELETE api/<SamuraisController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
+            try
+            {
+                _samurai.Delete(id);
+                return Ok($"Data samurai id {id} berhasil didelete");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
