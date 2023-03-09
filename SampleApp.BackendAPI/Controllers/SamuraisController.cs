@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using SampleApp.BackendAPI.Dto;
 using SampleApp.BackendAPI.Models;
 using SampleApp.BackendAPI.Services;
@@ -12,9 +13,11 @@ namespace SampleApp.BackendAPI.Controllers
     public class SamuraisController : ControllerBase
     {
         private readonly ISamurai _samurai;
-        public SamuraisController(ISamurai samurai)
+        private readonly IMapper _mapper;
+        public SamuraisController(ISamurai samurai,IMapper mapper)
         {
             _samurai = samurai;
+            _mapper = mapper;
         }
 
         // GET: api/<SamuraisController>
@@ -23,7 +26,7 @@ namespace SampleApp.BackendAPI.Controllers
         {
             try
             {
-                List<SamuraiReadDto> samuraiReadDtos = new List<SamuraiReadDto>();
+                /*List<SamuraiReadDto> samuraiReadDtos = new List<SamuraiReadDto>();
                 var results = _samurai.GetAll();
                 foreach (var result in results)
                 {
@@ -33,7 +36,11 @@ namespace SampleApp.BackendAPI.Controllers
                         Name = result.Name
                     });
                 }
-                return Ok(samuraiReadDtos);
+                return Ok(samuraiReadDtos);*/
+
+                var results = _samurai.GetAll();
+                var lstSamuraiReadDto = _mapper.Map<IEnumerable<SamuraiReadDto>>(results);
+                return Ok(lstSamuraiReadDto);
             }
             catch (Exception ex)
             {
@@ -44,7 +51,7 @@ namespace SampleApp.BackendAPI.Controllers
         [HttpGet("withQuotes")]
         public ActionResult<IEnumerable<SamuraiWithQuotesReadDto>> GetAllWithQuotes()
         {
-            List<SamuraiWithQuotesReadDto> listSamuraiWithQuotesDto = new List<SamuraiWithQuotesReadDto>();
+            /*List<SamuraiWithQuotesReadDto> listSamuraiWithQuotesDto = new List<SamuraiWithQuotesReadDto>();
             var results = _samurai.GetAllWithQuotes();
             foreach(Samurai samurai in results)
             {
@@ -65,6 +72,10 @@ namespace SampleApp.BackendAPI.Controllers
                     Quotes=listQuotes 
                 });
             }
+            return Ok(listSamuraiWithQuotesDto);*/
+
+            var results = _samurai.GetAllWithQuotes();
+            var listSamuraiWithQuotesDto = _mapper.Map<IEnumerable<SamuraiWithQuotesReadDto>>(results);
             return Ok(listSamuraiWithQuotesDto);
         }
 
@@ -74,13 +85,16 @@ namespace SampleApp.BackendAPI.Controllers
         {
             try
             {
-                var result = _samurai.GetById(id);
+                /*var result = _samurai.GetById(id);
                 SamuraiReadDto samuraiReadDto = new SamuraiReadDto()
                 {
                     Id = result.Id,
                     Name = result.Name
                 };
+                return Ok(samuraiReadDto);*/
 
+                var result = _samurai.GetById(id);
+                var samuraiReadDto = _mapper.Map<SamuraiReadDto>(result);
                 return Ok(samuraiReadDto);
             }
             catch (Exception ex)
@@ -95,7 +109,7 @@ namespace SampleApp.BackendAPI.Controllers
         {
             try
             {
-                var samurai = new Samurai()
+                /*var samurai = new Samurai()
                 {
                     Name = samuraiDto.Name
                 };
@@ -104,6 +118,11 @@ namespace SampleApp.BackendAPI.Controllers
                     Id = result.Id,
                     Name = result.Name 
                 };
+                return CreatedAtRoute("GetById", new { Id = result.Id }, samuraiReadDto);*/
+                
+                var samurai = _mapper.Map<Samurai>(samuraiDto);
+                var result = _samurai.Insert(samurai);
+                var samuraiReadDto = _mapper.Map<SamuraiReadDto>(result);
                 return CreatedAtRoute("GetById", new { Id = result.Id }, samuraiReadDto);
             }
             catch (Exception ex)
@@ -118,7 +137,7 @@ namespace SampleApp.BackendAPI.Controllers
         {
             try
             {
-                var samurai = new Samurai
+                /*var samurai = new Samurai
                 {
                     Name = samuraiUpdateDto.Name
                 };
@@ -128,7 +147,11 @@ namespace SampleApp.BackendAPI.Controllers
                     Id = result.Id,
                     Name = result.Name
                 };
-                return Ok(samuraiReadDto);
+                return Ok(samuraiReadDto);*/
+                var samurai = _mapper.Map<Samurai>(samuraiUpdateDto);
+                var result = _samurai.Update(id, samurai);
+                var samuraiReadDto = _mapper.Map<SamuraiReadDto>(result);
+                return Ok(result);
             }
             catch (Exception ex)
             {

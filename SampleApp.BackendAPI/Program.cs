@@ -22,6 +22,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+//automapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 #if DEBUG
 builder.Services.AddScoped<IMailServices, LocalMailService>();
 #else
