@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApp.BackendAPI", "SampleApp.BackendAPI\SampleApp.BackendAPI.csproj", "{16E7EFFE-9BA4-4025-B3D9-070153C79EF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbFirstSampleApp", "DbFirstSampleApp\DbFirstSampleApp.csproj", "{5C75C0F3-8D02-4CA2-8A6F-A0BF4EF38D64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbFirstSampleApp", "DbFirstSampleApp\DbFirstSampleApp.csproj", "{5C75C0F3-8D02-4CA2-8A6F-A0BF4EF38D64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
