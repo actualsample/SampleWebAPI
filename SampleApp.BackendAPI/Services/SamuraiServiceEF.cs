@@ -12,6 +12,24 @@ namespace SampleApp.BackendAPI.Services
             _dbContext = dbContext;
         }
 
+        public void AddSamuraiToBattle(int samuraiId, int battleId)
+        {
+            try
+            {
+                var samurai = _dbContext.Samurais.FirstOrDefault(s => s.Id == samuraiId);
+                var battle = _dbContext.Battles.FirstOrDefault(b=>b.BattleId == battleId);
+                if(samurai != null && battle != null)
+                {
+                    battle.Samurais.Add(samurai);
+                    _dbContext.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public void Delete(int id)
         {
             try

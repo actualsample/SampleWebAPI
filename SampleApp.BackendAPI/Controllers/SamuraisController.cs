@@ -173,5 +173,19 @@ namespace SampleApp.BackendAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("Battle")]
+        public ActionResult AddSamuraiToBattle(AddSamuraiToBattleDto samuraiToBattleDto)
+        {
+            try
+            {
+                _samurai.AddSamuraiToBattle(samuraiToBattleDto.SamuraiId, samuraiToBattleDto.BattleId);
+                return Ok($"Samurai id {samuraiToBattleDto.SamuraiId} berhasil ditambahkan ke battle dengan id {samuraiToBattleDto.BattleId}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

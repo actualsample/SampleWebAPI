@@ -1,4 +1,5 @@
-﻿using SampleApp.BackendAPI.Models;
+﻿using Newtonsoft.Json.Bson;
+using SampleApp.BackendAPI.Models;
 
 namespace SampleApp.BackendAPI.Services
 {
@@ -6,5 +7,6 @@ namespace SampleApp.BackendAPI.Services
     {
         IEnumerable<Samurai> GetByName(string name);
         IEnumerable<Samurai> GetAllWithQuotes();
+        public void AddSamuraiToBattle(int samuraiId, int battleId);
     }
 }
