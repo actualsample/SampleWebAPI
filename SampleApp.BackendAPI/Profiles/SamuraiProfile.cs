@@ -17,8 +17,9 @@ namespace SampleApp.BackendAPI.Profiles
             CreateMap<BattleReadDto,Battle>();
             CreateMap<SamuraiWithBattleDto, Samurai>();
             CreateMap<Samurai, SamuraiWithBattleDto>();
-          
-           
+            CreateMap<Quote, QuoteInsertDto>();
+            CreateMap<QuoteInsertDto, Quote>();
+            CreateMap<SamuraiInsertWithQutesDto, Samurai>();
         }
     }
 }

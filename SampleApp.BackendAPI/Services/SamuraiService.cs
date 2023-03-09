@@ -137,7 +137,7 @@ namespace SampleApp.BackendAPI.Services
             throw new NotImplementedException();
         }
 
-        public void AddSamuraiToBattle(int samuraiId, int battleId)
+        public async Task AddSamuraiToBattle(int samuraiId, int battleId)
         {
             throw new NotImplementedException();
         }
@@ -148,6 +148,11 @@ namespace SampleApp.BackendAPI.Services
         }
 
         public async Task<IEnumerable<Samurai>> GetAllSamuraiWithBattle()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveBattleFromSamurai(int samuraiId, int battleId)
         {
             throw new NotImplementedException();
         }

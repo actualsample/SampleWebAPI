@@ -2,6 +2,7 @@
 using SampleApp.BackendAPI.Data;
 using SampleApp.BackendAPI.Models;
 using Serilog;
+using SQLitePCL;
 using System.Collections;
 
 namespace SampleApp.BackendAPI.Services
@@ -17,19 +18,19 @@ namespace SampleApp.BackendAPI.Services
             _loger = logger;
         }
 
-        public void AddSamuraiToBattle(int samuraiId, int battleId)
+        public async Task AddSamuraiToBattle(int samuraiId, int battleId)
         {
             try
             {
-                var samurai = _dbContext.Samurais.FirstOrDefault(s => s.Id == samuraiId);
-                var battle = _dbContext.Battles.FirstOrDefault(b=>b.BattleId == battleId);
+                var samurai = await _dbContext.Samurais.FirstOrDefaultAsync(s => s.Id == samuraiId);
+                var battle = await _dbContext.Battles.FirstOrDefaultAsync(b=>b.BattleId == battleId);
 
-                _loger.LogInformation($"{samurai.Name} - {battle.Name}");
+                //_loger.LogInformation($"{samurai.Name} - {battle.Name}");
                 if(samurai != null && battle != null)
                 {
                     battle.Samurais = new List<Samurai>();
                     battle.Samurais.Add(samurai);
-                    _dbContext.SaveChanges();
+                    await _dbContext.SaveChangesAsync();
                 }
             }
             catch (Exception ex)
@@ -107,6 +108,24 @@ namespace SampleApp.BackendAPI.Services
                 _dbContext.Samurais.Add(obj);
                 _dbContext.SaveChanges();
                 return obj;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public void RemoveBattleFromSamurai(int samuraiId, int battleId)
+        {
+            try
+            {
+                var battleWithSamurai = _dbContext.Battles.Include(b => b.Samurais.FirstOrDefault(s => s.Id == samuraiId))
+                    .FirstOrDefault(b=>b.BattleId==battleId);
+                if(battleWithSamurai == null)
+                    throw new Exception($"Data battle id {battleId} tidak ditemukan");
+                var samurai = battleWithSamurai.Samurais[0];
+                battleWithSamurai.Samurais.Remove(samurai);
+                _dbContext.SaveChanges();
             }
             catch (Exception ex)
             {

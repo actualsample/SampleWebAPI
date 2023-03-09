@@ -134,6 +134,22 @@ namespace SampleApp.BackendAPI.Controllers
             }
         }
 
+        [HttpPost("WithQuotes")]
+        public ActionResult<SamuraiReadDto> PostWithQuote(SamuraiInsertWithQutesDto samuraiInsertWithQutesDto)
+        {
+            try
+            {
+                var samurai = _mapper.Map<Samurai>(samuraiInsertWithQutesDto);
+                var result = _samurai.Insert(samurai);
+                var samuraiReadDto = _mapper.Map<SamuraiReadDto>(result);
+                return CreatedAtRoute("GetById", new { Id = result.Id }, samuraiReadDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         // PUT api/<SamuraisController>/5
         [HttpPut("{id}")]
         public ActionResult<SamuraiReadDto> Put(int id, SamuraiUpdateDto samuraiUpdateDto)
@@ -178,13 +194,13 @@ namespace SampleApp.BackendAPI.Controllers
         }
 
         [HttpPost("Battle")]
-        public ActionResult AddSamuraiToBattle(AddSamuraiToBattleDto samuraiToBattleDto)
+        public async Task<ActionResult> AddSamuraiToBattle(AddSamuraiToBattleDto samuraiToBattleDto)
         {
             try
             {
-                _logger.LogInformation($"{samuraiToBattleDto.SamuraiId} - {samuraiToBattleDto.BattleId}");
+                //_logger.LogInformation($"{samuraiToBattleDto.SamuraiId} - {samuraiToBattleDto.BattleId}");
                 //return NoContent();
-                _samurai.AddSamuraiToBattle(samuraiToBattleDto.SamuraiId, samuraiToBattleDto.BattleId);
+                await _samurai.AddSamuraiToBattle(samuraiToBattleDto.SamuraiId, samuraiToBattleDto.BattleId);
                 return Ok($"Samurai id {samuraiToBattleDto.SamuraiId} berhasil ditambahkan ke battle dengan id {samuraiToBattleDto.BattleId}");
             }
             catch (Exception ex)
@@ -208,7 +224,6 @@ namespace SampleApp.BackendAPI.Controllers
             var samurai = await _samurai.GetAllSamuraiWithBattle();
             var samuraiWithBattleDto = _mapper.Map<IEnumerable<SamuraiWithBattleDto>>(samurai);
             return Ok(samuraiWithBattleDto);
-
         }
     }
 }

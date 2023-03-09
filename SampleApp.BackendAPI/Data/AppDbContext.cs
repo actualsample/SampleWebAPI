@@ -12,9 +12,20 @@ namespace SampleApp.BackendAPI.Data
         public DbSet<Samurai> Samurais { get; set; }
         public DbSet<Quote> Quotes { get; set; }
         public DbSet<Battle> Battles { get; set; }
+        public DbSet<BattleSamurai> BattleSamurai { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Samurai>().HasMany(a => a.Battles)
+                .WithMany(b => b.Samurais)
+                .UsingEntity<BattleSamurai>(
+                bs => bs.HasOne<Battle>().WithMany(),
+                bs => bs.HasOne<Samurai>().WithMany())
+                .Property(bs => bs.DateJoined)
+                .HasDefaultValueSql("getdate()");
+
             modelBuilder.Entity<Samurai>().HasData(
                 new Samurai { Id = 1, Name = "Kamado Tanjiro" });
             var samuraiList = new Samurai[]
