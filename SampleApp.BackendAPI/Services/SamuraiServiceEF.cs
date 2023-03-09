@@ -54,16 +54,16 @@ namespace SampleApp.BackendAPI.Services
 
         public IEnumerable<Samurai> GetAll()
         {
-            var results = _dbContext.Samurais.OrderBy(x => x.Name).ToList();
+            var results = _dbContext.Samurais.OrderBy(x => x.Name).AsNoTracking().ToList();
             /*var results = from s in _dbContext.Samurais
                           orderby s.Name ascending
                           select s;*/
             return results;
         }
 
-        public IEnumerable<Samurai> GetAllSamuraiWithBattle()
+        public async Task<IEnumerable<Samurai>> GetAllSamuraiWithBattle()
         {
-            var samurai = _dbContext.Samurais.Include(s => s.Battles);
+            var samurai = await _dbContext.Samurais.Include(s => s.Battles).ToListAsync();
             return samurai;
         }
 

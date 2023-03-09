@@ -203,9 +203,9 @@ namespace SampleApp.BackendAPI.Controllers
         }
 
         [HttpGet("WithAllBattle")]
-        public ActionResult<IEnumerable<SamuraiWithBattleDto>> GetSamuraiWithBattle()
+        public async Task<ActionResult<IEnumerable<SamuraiWithBattleDto>>> GetSamuraiWithBattle()
         {
-            var samurai = _samurai.GetAllSamuraiWithBattle();
+            var samurai = await _samurai.GetAllSamuraiWithBattle();
             var samuraiWithBattleDto = _mapper.Map<IEnumerable<SamuraiWithBattleDto>>(samurai);
             return Ok(samuraiWithBattleDto);
 

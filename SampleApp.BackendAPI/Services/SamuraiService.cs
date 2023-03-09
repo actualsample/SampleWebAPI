@@ -147,7 +147,7 @@ namespace SampleApp.BackendAPI.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Samurai> GetAllSamuraiWithBattle()
+        public async Task<IEnumerable<Samurai>> GetAllSamuraiWithBattle()
         {
             throw new NotImplementedException();
         }
