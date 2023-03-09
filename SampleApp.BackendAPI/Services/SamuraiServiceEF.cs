@@ -1,15 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SampleApp.BackendAPI.Data;
 using SampleApp.BackendAPI.Models;
+using Serilog;
 
 namespace SampleApp.BackendAPI.Services
 {
     public class SamuraiServiceEF : ISamurai
     {
         private readonly AppDbContext _dbContext;
-        public SamuraiServiceEF(AppDbContext dbContext)
+        private readonly ILogger<SamuraiServiceEF> _loger;
+
+        public SamuraiServiceEF(AppDbContext dbContext,ILogger<SamuraiServiceEF> logger)
         {
             _dbContext = dbContext;
+            _loger = logger;
         }
 
         public void AddSamuraiToBattle(int samuraiId, int battleId)
@@ -18,15 +22,18 @@ namespace SampleApp.BackendAPI.Services
             {
                 var samurai = _dbContext.Samurais.FirstOrDefault(s => s.Id == samuraiId);
                 var battle = _dbContext.Battles.FirstOrDefault(b=>b.BattleId == battleId);
+
+                _loger.LogInformation($"{samurai.Name} - {battle.Name}");
                 if(samurai != null && battle != null)
                 {
+                    battle.Samurais = new List<Samurai>();
                     battle.Samurais.Add(samurai);
                     _dbContext.SaveChanges();
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exception($"{ex.Message} - {ex.InnerException.Message}");
             }
         }
 

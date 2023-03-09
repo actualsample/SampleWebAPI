@@ -14,10 +14,13 @@ namespace SampleApp.BackendAPI.Controllers
     {
         private readonly ISamurai _samurai;
         private readonly IMapper _mapper;
-        public SamuraisController(ISamurai samurai,IMapper mapper)
+        private readonly ILogger _logger;
+
+        public SamuraisController(ISamurai samurai,IMapper mapper,ILogger<SamuraisController> logger)
         {
             _samurai = samurai;
             _mapper = mapper;
+            _logger = logger;
         }
 
         // GET: api/<SamuraisController>
@@ -179,6 +182,8 @@ namespace SampleApp.BackendAPI.Controllers
         {
             try
             {
+                _logger.LogInformation($"{samuraiToBattleDto.SamuraiId} - {samuraiToBattleDto.BattleId}");
+                //return NoContent();
                 _samurai.AddSamuraiToBattle(samuraiToBattleDto.SamuraiId, samuraiToBattleDto.BattleId);
                 return Ok($"Samurai id {samuraiToBattleDto.SamuraiId} berhasil ditambahkan ke battle dengan id {samuraiToBattleDto.BattleId}");
             }
