@@ -192,5 +192,23 @@ namespace SampleApp.BackendAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("WithBattle")]
+        public ActionResult<SamuraiWithBattleDto> GetSamuraiWithBattle(int samuraiId)
+        {
+            var samurai = _samurai.GetSamuraiWithBattle(samuraiId);
+            var samuraiWithBattleDto = _mapper.Map<SamuraiWithBattleDto>(samurai);
+            return Ok(samuraiWithBattleDto);
+
+        }
+
+        [HttpGet("WithAllBattle")]
+        public ActionResult<IEnumerable<SamuraiWithBattleDto>> GetSamuraiWithBattle()
+        {
+            var samurai = _samurai.GetAllSamuraiWithBattle();
+            var samuraiWithBattleDto = _mapper.Map<IEnumerable<SamuraiWithBattleDto>>(samurai);
+            return Ok(samuraiWithBattleDto);
+
+        }
     }
 }

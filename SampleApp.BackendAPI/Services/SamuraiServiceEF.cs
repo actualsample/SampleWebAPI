@@ -2,6 +2,7 @@
 using SampleApp.BackendAPI.Data;
 using SampleApp.BackendAPI.Models;
 using Serilog;
+using System.Collections;
 
 namespace SampleApp.BackendAPI.Services
 {
@@ -60,6 +61,12 @@ namespace SampleApp.BackendAPI.Services
             return results;
         }
 
+        public IEnumerable<Samurai> GetAllSamuraiWithBattle()
+        {
+            var samurai = _dbContext.Samurais.Include(s => s.Battles);
+            return samurai;
+        }
+
         public IEnumerable<Samurai> GetAllWithQuotes()
         {
             var results = _dbContext.Samurais.Include(s=>s.Quotes).ToList();
@@ -83,6 +90,14 @@ namespace SampleApp.BackendAPI.Services
                           orderby s.Name descending
                           select s;*/
             return results;
+        }
+
+        public Samurai GetSamuraiWithBattle(int samuraiId)
+        {
+            var samurai = _dbContext.Samurais.Include(s => s.Battles).FirstOrDefault(s=>s.Id==samuraiId);
+            if (samurai == null)
+                throw new Exception($"Samurai {samuraiId} not found");
+            return samurai;
         }
 
         public Samurai Insert(Samurai obj)

@@ -8,5 +8,7 @@ namespace SampleApp.BackendAPI.Services
         IEnumerable<Samurai> GetByName(string name);
         IEnumerable<Samurai> GetAllWithQuotes();
         public void AddSamuraiToBattle(int samuraiId, int battleId);
+        public Samurai GetSamuraiWithBattle(int samuraiId);
+        public IEnumerable<Samurai> GetAllSamuraiWithBattle();
     }
 }

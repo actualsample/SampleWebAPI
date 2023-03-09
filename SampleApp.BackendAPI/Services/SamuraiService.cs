@@ -141,5 +141,15 @@ namespace SampleApp.BackendAPI.Services
         {
             throw new NotImplementedException();
         }
+
+        public Samurai GetSamuraiWithBattle(int samuraiId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Samurai> GetAllSamuraiWithBattle()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

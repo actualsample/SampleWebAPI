@@ -13,6 +13,12 @@ namespace SampleApp.BackendAPI.Profiles
             CreateMap<SamuraiUpdateDto, Samurai>();
             CreateMap<Samurai,SamuraiWithQuotesReadDto>();
             CreateMap<Quote,QuoteReadDto>();
+            CreateMap<Battle, BattleReadDto>();
+            CreateMap<BattleReadDto,Battle>();
+            CreateMap<SamuraiWithBattleDto, Samurai>();
+            CreateMap<Samurai, SamuraiWithBattleDto>();
+          
+           
         }
     }
 }
