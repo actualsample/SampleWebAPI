@@ -59,12 +59,13 @@ namespace IDPServer.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles ="admin")]
         [HttpGet]
         public IEnumerable<UserReadDto> GetAll()
         {
             return _user.GetAll();
         }
+
 
         [AllowAnonymous]
         [HttpPost("Login")]

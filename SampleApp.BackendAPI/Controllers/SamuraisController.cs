@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SampleApp.BackendAPI.Dto;
 using SampleApp.BackendAPI.Models;
@@ -10,6 +11,7 @@ namespace SampleApp.BackendAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SamuraisController : ControllerBase
     {
         private readonly ISamurai _samurai;
@@ -25,6 +27,7 @@ namespace SampleApp.BackendAPI.Controllers
 
         // GET: api/<SamuraisController>
         [HttpGet]
+        [Authorize(Roles ="admin")]
         public ActionResult<IEnumerable<SamuraiReadDto>> Get()
         {
             try
@@ -84,6 +87,7 @@ namespace SampleApp.BackendAPI.Controllers
 
         // GET api/<SamuraisController>/5
         [HttpGet("{id}",Name = "GetById")]
+        [Authorize(Roles ="finance")]
         public ActionResult<SamuraiReadDto> Get(int id)
         {
             try
